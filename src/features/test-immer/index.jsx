@@ -22,10 +22,28 @@ export default class TestImmer extends Component {
   componentDidUpdate() {
     console.log('父组件重新渲染了')
   }
+
+  // 改变父组件状态的反面写法
   handleChange1() {
+    /**
+     * 第一种写法，这种会使每一步增 2，而不是 1 ，是错误的写法
+     */
+    // this.setState(({ p }) => {
+    //   let a = p.a + 1
+    //   p.a = a
+    //   return {p}
+    // })
+
+    /**
+     * 第二种，这种其实可以达到优化目的，不会让组件 3 重渲染，但是它是直接在 state 修改，不推荐
+     */
     // let p = this.state.p // 实际上这个 p 会和 this.state.p 引用同一个 p
-    // p.a = p.a+1
-    //this.setState({p})
+    // p.a = p.a+1 // 其实这里已经直接在 state 上修改 p 了
+    // this.setState({p})
+
+    /**
+     * 第三种,会让组件 3 重渲染
+     */
     this.setState(({ p }) => {
       let a = p.a + 1
       return {
@@ -38,14 +56,38 @@ export default class TestImmer extends Component {
       }}
     })
   }
+
+  // 改变父组件状态的正确写法
   handleChange2() {
-    let curP = this.state.p
-    let newP = produce(curP, draftP => {
-      draftP.a = draftP.a + 1
-    })
-    this.setState({
-      p: newP
-    })
+   /**
+    * 第一种方法
+    */
+  //  this.setState(({ p }) => {
+  //   let a = p.a + 1
+  //   return {
+  //     p: {
+  //       ...p,
+  //       a,
+  //   }}
+  //  })
+    
+    /**
+     * 第二种方法，使用 immer.js
+     */
+    // let curP = this.state.p
+    // let newP = produce(curP, draftP => {
+    //   draftP.a = draftP.a + 1
+    // })
+    // this.setState({
+    //   p: newP
+    // })
+
+    /**
+     * 第二种的第二种写法，更加简洁
+     */
+    this.setState(produce(draftState => {
+      draftState.p.a++
+    }))
   }
   render() {
     return (
@@ -74,49 +116,41 @@ export default class TestImmer extends Component {
                 第一种：
                 <pre>
                   {`
-                    handleChange1() {
-                      let p = this.state.p // 实际上这个 p 会和 this.state.p 引用同一个 p
-                      p.a = p.a+1 
-                      this.setState({p})
-                    }`}
+                   // 改变父组件状态的反面写法
+                   handleChange1() {
+                     /**
+                      * 第一种写法，这种会使每一步增 2，而不是 1 ，是错误的写法
+                      */
+                     // this.setState(({ p }) => {
+                     //   let a = p.a + 1
+                     //   p.a = a
+                     //   return {p}
+                     // })
+                 
+                     /**
+                      * 第二种，这种其实可以达到优化目的，不会让组件 3 重渲染，但是它是直接在 state 修改，不推荐
+                      */
+                     // let p = this.state.p // 实际上这个 p 会和 this.state.p 引用同一个 p
+                     // p.a = p.a+1 // 其实这里已经直接在 state 上修改 p 了
+                     // this.setState({p})
+                 
+                     /**
+                      * 第三种
+                      */
+                     this.setState(({ p }) => {
+                       let a = p.a + 1
+                       return {
+                         p: {
+                           a,
+                           b: p.b, // b 是基本类型
+                           c: { // 这里实际上 c 被赋予了新的对象，虽然值与原来一样，但是引用地址不同了
+                             d: 0
+                           }
+                       }}
+                     })
+                   }
+                 `}
                 </pre>
-                或者: 
-                <pre>
-                  {`
-                    handleChange1() {
-                      // let p = this.state.p // 实际上这个 p 会和 this.state.p 引用同一个 p
-                      // p.a = p.a+1
-                      //this.setState({p})
-                      this.setState(({ p }) => {
-                        let a = p.a + 1
-                        return {
-                          p: {
-                            a,
-                            b: p.b, // b 是基本类型
-                            c: { // 这里实际上 c 被赋予了新的对象，虽然值与原来一样，但是引用地址不同了
-                              d: 0
-                            }
-                        }}
-                      })
-                    }
-                  `}
-                </pre>
-                注意，下面这种写法会让每一步自增 2 ,不要用这种写法：
-                  <pre>
-                    {
-                      `
-                      handleChange1() {
-                        // let p = this.state.p // 实际上这个 p 会和 this.state.p 引用同一个 p
-                        // p.a = p.a+1
-                        //this.setState({p})
-                        this.setState(({ p }) => {
-                          let a = p.a + 1
-                          p.a = a
-                          return {p}
-                        })
-                       }`
-                    }
-                  </pre>
               </div>
               <div style={{
                 backgroundColor: 'green',
@@ -126,16 +160,38 @@ export default class TestImmer extends Component {
                 第二种，引入不可变数据，使用 immer.js 库：
                 <pre>
                   {`
+                    // 改变父组件状态的正确写法
                     handleChange2() {
-                      let curP = this.state.p
-                      let newP = produce(curP, draftP => {
-                        draftP.a = draftP.a + 1
-                      })
-                      this.setState({
-                        p: newP
-                      })
-                    }
-                  `}
+                     /**
+                      * 第一种方法
+                      */
+                    //  this.setState(({ p }) => {
+                    //   let a = p.a + 1
+                    //   return {
+                    //     p: {
+                    //       ...p,
+                    //       a
+                    //   }}
+                    //  })
+                      
+                      /**
+                       * 第二种方法，使用 immer.js
+                       */
+                      // let curP = this.state.p
+                      // let newP = produce(curP, draftP => {
+                      //   draftP.a = draftP.a + 1
+                      // })
+                      // this.setState({
+                      //   p: newP
+                      // })
+                  
+                      /**
+                       * 第二种的第二种写法，更加简洁
+                       */
+                      this.setState(produce(draftState => {
+                        draftState.p.a++
+                      }))
+                    }`}
                 </pre>
               </div>
             </div>
