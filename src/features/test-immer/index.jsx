@@ -37,24 +37,24 @@ export default class TestImmer extends Component {
     /**
      * 第二种，这种其实可以达到优化目的，不会让组件 3 重渲染，但是它是直接在 state 修改，不推荐
      */
-    // let p = this.state.p // 实际上这个 p 会和 this.state.p 引用同一个 p
-    // p.a = p.a+1 // 其实这里已经直接在 state 上修改 p 了
-    // this.setState({p})
+    let p = this.state.p // 实际上这个 p 会和 this.state.p 引用同一个 p
+    p.a++ // 其实这里已经直接在 state 上修改 p 了
+    this.setState({p})
 
     /**
      * 第三种,会让组件 3 重渲染
      */
-    this.setState(({ p }) => {
-      let a = p.a + 1
-      return {
-        p: {
-          a,
-          b: p.b, // b 是基本类型
-          c: { // 这里实际上 c 被赋予了新的对象，虽然值与原来一样，但是引用地址不同了
-            d: 0
-          }
-      }}
-    })
+    // this.setState(({ p }) => {
+    //   let a = p.a + 1
+    //   return {
+    //     p: {
+    //       a,
+    //       b: p.b, // b 是基本类型
+    //       c: { // 这里实际上 c 被赋予了新的对象，虽然值与原来一样，但是引用地址不同了
+    //         d: 0
+    //       }
+    //   }}
+    // })
   }
 
   // 改变父组件状态的正确写法

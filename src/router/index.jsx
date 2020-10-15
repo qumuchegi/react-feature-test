@@ -2,6 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import TestReselect from '../features/test-reselect/index'
 import TestImmer from '../features/test-immer/index'
+import TestHoc from '../features/Hoc/反向继承'
+import A from '../features/renderTree/index'
 
 export const routes = [
   {
@@ -14,7 +16,16 @@ export const routes = [
     component: <TestImmer/>,
     link: '测试 immer.js 的作用(PureComponent、shouldComponent)'
   },
-
+  {
+    path: '/hoc',
+    component: <TestHoc b={1}/>,
+    link: '测试 HOC'
+  }, 
+  {
+    path: '/renderTree',
+    component: <A/>,
+    link: '测试树的重渲染'
+  }
 ]
 
 export function FeatureList() {
