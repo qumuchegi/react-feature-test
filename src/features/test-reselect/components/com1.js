@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { createSelector } from 'reselect'
 
 class Com1 extends Component{
   componentDidUpdate() {
@@ -21,7 +22,13 @@ class Com1 extends Component{
 }
 export default connect(
   state => ({
-    count: state.com1State.count
+    count: createSelector(
+      state => state.com1State,
+      com1State => {
+        console.log('引起组件1状态重新计算')
+        return com1State.count
+      }
+    )(state)//state.com1State.count
   }),
   dispatch => ({
     dispatchAdd: ()=>dispatch(add)

@@ -1,6 +1,6 @@
 import React, {Component, PureComponent} from 'react'
 
-export default class B extends PureComponent {
+class B extends Component {
   static whyDidYouRender = true;
 
   style = {backgroundColor: 'white', width: '200px', height: '100px', padding: '10px'}
@@ -34,3 +34,15 @@ class F extends PureComponent {
     </div>
   }
 }
+
+export default React.memo(B, 
+  // (prevProps, nextProps) => {
+  //   if(Object.keys(prevProps).length !== Object.keys(nextProps).length) return false
+  //   for( let key in prevProps) {
+  //     if (prevProps[key] !== nextProps[key]) {
+  //       return false
+  //     }
+  //   }
+  //   return true
+  // }
+)
