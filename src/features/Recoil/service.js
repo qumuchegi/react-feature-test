@@ -1,24 +1,28 @@
-export const fetchFriends = () => {
+export const getProductList = () => {
+  console.count('调用 getProductList 次数')
   return new Promise((resolve) => {
     setTimeout(()=>{
       resolve({
         data: {
-          friends: [
+          products: [
             {
-              name: 'xiaoming',
-              age: 11
+              id: 'iphone',
+              name: 'iphone 12',
+              price: 8400
             },
             {
-              name: 'xiaohong',
-              age: 12
+              id: 'huawei mate 40',
+              name: 'huawei mate 40',
+              price: 8600
             },
             {
-              name: 'xiaodong',
-              age: 10
+              id: 'xiaomi 10',
+              name: 'xiaomi 10',
+              price: 5678
             }
           ]
         }
       })
-    })
+    }, 3000)
   })
 }

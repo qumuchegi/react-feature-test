@@ -4,6 +4,8 @@ import TestReselect from '../features/test-reselect/index'
 import TestImmer from '../features/test-immer/index'
 import TestHoc from '../features/Hoc/反向继承'
 import A from '../features/renderTree/index'
+import Com1 from '../features/context/'
+import Shopee from '../features/Recoil/index'
 
 export const routes = [
   {
@@ -25,42 +27,22 @@ export const routes = [
     path: '/renderTree',
     component: <A/>,
     link: '测试树的重渲染'
+  },
+  {
+    path: '/context',
+    component: <Com1/>,
+    link: 'React Context'
+  },
+  {
+    path: '/recoil',
+    component: <Shopee/>,
+    link: 'recoil demo'
   }
 ]
 
 export function FeatureList() {
 
   return <Router>
-    <div style={{
-      margin: '10px auto',
-      width: '90%',
-      display: 'flex',
-      justifyContent: 'flex-start'
-    }}>
-      <div style={{
-        backgroundColor: 'green',
-        border: 'solid 1.2px red',
-        borderRadius: '4px',
-        textAlign: 'center',
-        maxWidth: '100px',
-        padding: '10px 20px'
-      }}>
-        <Link to='/' style={{color: 'white', textDecoration: 'none',}}>首页</Link>
-      </div>
-      {
-        routes.map(({ link, path }) => <div key={link} style={{
-          backgroundColor: 'white',
-          border: 'solid 1.2px red',
-          borderRadius: '4px',
-          textAlign: 'center',
-          maxWidth: '100px',
-          padding: '10px 20px',
-          marginLeft: '10px'
-        }}>
-            <Link to={path} style={{color: 'origin', textDecoration: 'no',}}>{link}</Link>
-          </div>)
-      }
-    </div>
     <Switch>
     {
       routes.map(route => {
