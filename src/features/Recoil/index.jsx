@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {RecoilRoot} from 'recoil'
+import { RecoilRoot } from 'recoil'
 import ProductList from './pages/products'
 import Order from './pages/order'
 import Cart from './pages/cart'
@@ -24,23 +24,24 @@ export default function Shopee() {
     </div>
     <div style={{display:'felx', justifyContent:'space-around'}}>
       {
-        !isTabMode ?
-        <div> {Modals} </div>
+        !isTabMode
+        ?
+         <div> {Modals} </div>
         : 
-        <div> 
-          <div id="tab-nav">
-            {
-              ['商品列表', '我的购物车', '我的订单']
-              .map((tabName, idx) => 
-                <div key={tabName} 
-                     onClick={() => setTabIdxDisplayed(idx)}
-                     style={{backgroundColor: tabIdxDisplayed === idx ? '#aac':'white'}}
-                >{tabName}</div>
-              )
-            }
+          <div> 
+            <div id="tab-nav">
+              {
+                ['商品列表', '我的购物车', '我的订单']
+                .map((tabName, idx) => 
+                  <div key={tabName} 
+                      onClick={() => setTabIdxDisplayed(idx)}
+                      style={{backgroundColor: tabIdxDisplayed === idx ? '#aac':'white'}}
+                  >{tabName}</div>
+                )
+              }
+            </div>
+            {Modals[tabIdxDisplayed]} 
           </div>
-          {Modals[tabIdxDisplayed]} 
-        </div>
       }
       
     </div>

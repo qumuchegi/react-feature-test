@@ -125,7 +125,6 @@ const useRequest = (loadable, stateHandler) => {
           break
         default:
           break
-          //stateHandler.success(loadable.contents)
       }
     }
   , [loadable.state])

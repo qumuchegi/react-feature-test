@@ -17,8 +17,7 @@ export const orderSubmition = selector({
     // orderWillSubmitAtom 改变的时候会重新计算 get
     // 能不能在 orderWillSubmitAtom 为初始值时不见算 selector 呢?
     const orderWillSubmit = get(orderWillSubmitAtom)
-    console.count('提交次数')
-    console.log({orderWillSubmit})
+    console.count('执行 selector 提交订单的次数')
     if (!orderWillSubmit) return requestStatus.noReq
     const res = await postOrder(orderWillSubmit)
     return res

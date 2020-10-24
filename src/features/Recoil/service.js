@@ -3,7 +3,7 @@ import huawei from './imgs/huawei.jpeg'
 import xiaomi from './imgs/xiaomi.jpeg'
 
 export const getProductList = () => {
-  console.count('调用 getProductList 次数')
+  // console.count('调用 getProductList 次数')
   return new Promise((resolve) => {
     setTimeout(()=>{
       resolve({
@@ -36,7 +36,7 @@ export const getProductList = () => {
 
 let orderDB = []
 export const postOrder = (order) => {
-  console.count('接收订单')
+  // console.count('接收订单')
   return new Promise((resolve) => {
     orderDB = [...orderDB, order]
     setTimeout(() => {

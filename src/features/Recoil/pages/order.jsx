@@ -1,7 +1,7 @@
 import React from 'react'
-import {useRecoilValue} from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { orderAtom } from '../store/atoms'
-import {useSubmitOrder} from '../store/hooks'
+import { useSubmitOrder } from '../store/hooks'
 
 import '../style/order.css'
 
@@ -31,7 +31,7 @@ export default function Order() {
       ? orderList.map(
         listItem => <div key={listItem.orderID} className="order-item">
           <div style={{display:'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
-            <img src={listItem.img} style={{width: '60px'}}/>
+            <img src={listItem.img} style={{width: '60px'}} alt=''/>
             {listItem.name}
           </div>
           <div>
@@ -57,7 +57,7 @@ export default function Order() {
         </div>  
       )
       : <div style={{textAlign:'center'}}>订单空了</div>
-      }    
+    }    
     </div>
   </div>
 }

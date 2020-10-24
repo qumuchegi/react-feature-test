@@ -1,16 +1,17 @@
 import React from 'react'
-import {useRecoilValue} from 'recoil'
-import {cartAtom} from '../store/atoms'
-import {productsQuery} from '../store/selector'
+import { useRecoilValue } from 'recoil'
+import { cartAtom } from '../store/atoms'
 
-import {useDecreaseProductIncart, useRemoveProductIncart, useAddProductToCart, useAddProductToOrder} from '../store/hooks'
+import {
+  useDecreaseProductIncart,
+  useRemoveProductIncart,
+  useAddProductToCart,
+  useAddProductToOrder
+} from '../store/hooks'
 
 import '../style/list.css'
 
 export default function Cart() {
-  // const productsLoadable = useRecoilValueLoadable(productsQuery)
-  // const [cart, setCart] = useRecoilState(cartAtom)
-
   const cartList = useRecoilValue(cartAtom)
   const [decreaseItemInCart] = useDecreaseProductIncart()
   const [rmItemInCart] = useRemoveProductIncart()
