@@ -34,7 +34,7 @@ export default function Shopee() {
               .map((tabName, idx) => 
                 <div key={tabName} 
                      onClick={() => setTabIdxDisplayed(idx)}
-                     style={{backgroundColor: tabIdxDisplayed === idx ? '#b9a':'white'}}
+                     style={{backgroundColor: tabIdxDisplayed === idx ? '#aac':'white'}}
                 >{tabName}</div>
               )
             }

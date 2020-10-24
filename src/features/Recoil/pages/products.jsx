@@ -13,14 +13,14 @@ import {useAddProductToCart, useRemoveProductIncart} from '../store/hooks'
 // ProductList.whyDidYouRender = true
 function ProductList(){
   //productsLoadable 会被缓存
-  const productsLoadable = useRecoilValueLoadable(productsQuery)
-  console.count('组件 ProductList 渲染次数')
+  const productsLoadable = useRecoilValueLoadable(productAtom)
+  //console.count('组件 ProductList 渲染次数')
   const cart = useRecoilValue(cartAtom)
-  //const productsLoadable1 = useRecoilValueLoadable(productsQuery)
 
   const [addToCart] = useAddProductToCart()
   const [rmItemInCart] = useRemoveProductIncart()
 
+  // 可以用 React 的 Suspense 代替下面的代码来处理异步状态
   switch (productsLoadable.state) {
     case 'hasValue': 
       const products = productsLoadable.contents
@@ -29,8 +29,9 @@ function ProductList(){
           products
           .map(product => 
             <div key={product.name} className="product-item">
+              <div><img src={product.img} style={{width: '60px'}}/></div>
               <div>{product.name}</div>
-              <div>{product.price}</div>
+              <div>{product.price} 元</div>
               {
                 cart.findIndex(
                   itemCart => itemCart.id === product.id
@@ -53,7 +54,7 @@ function ProductList(){
       return <div>请求出错</div>
     case 'loading': 
     default: 
-      return <div>正在加载中......</div>
+      return <div style={{textAlign: 'center'}}>正在加载中......</div>
   }
 }
 
