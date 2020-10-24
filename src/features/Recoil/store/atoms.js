@@ -22,10 +22,10 @@ export const orderAtom = atom({
 
 export const orderWillSubmitAtom = atom({
   key: 'submitOrderStatusAtom',
-  default: []
+  default: null
 })
 
 export const orderIDHadSubmitAtom = atom({
   key: 'orderIDHadSubmitAtom',
-  default: null
+  default: []
 })

@@ -79,7 +79,7 @@ export function useSubmitOrder() {
   const loadableStateHandler = {
     pending: () => {
       setIsPending(true)
-      console.log('正在提交订单')
+      console.count('正在提交订单')
     },
     success: (loadableContents) => {
       setIsPending(false)
@@ -100,12 +100,9 @@ export function useSubmitOrder() {
     // 只需要往 orderWillSubmitAtom 添加待提交的订单，
     // orderSubmition 这个 selector 会自动执行提交的异步请求
     // 然后将请求后的响应返回
-    setOrderWillSubmit(produce(draftOrder => {
-      draftOrder = orderItem
-      return draftOrder
-    }))
+    setOrderWillSubmit(orderItem)
   }
-  return [submitOrder, orderIDHadSubmit, isPending, orderWillSubmit.orderID]
+  return [submitOrder, orderIDHadSubmit, isPending, orderWillSubmit?.orderID]
 }
 
 /**
@@ -124,9 +121,12 @@ const useRequest = (loadable, stateHandler) => {
         case 'hasError':
           stateHandler.fail()
           break
-        default:
         case 'loading':
           stateHandler.pending()
+          break
+        default:
+          break
+          //stateHandler.success(loadable.contents)
       }
     }
   

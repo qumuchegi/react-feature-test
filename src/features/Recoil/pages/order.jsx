@@ -40,19 +40,19 @@ export default function Order() {
             <div>订单号: {listItem.orderID}</div>
           </div>
           {
+            isPending && orderIDWillSubmit === listItem.orderID
+            ?
+            <div>正在提交....</div>
+            :
             orderIDHadSubmit.findIndex(id => id === listItem.orderID) !== -1
               ? 
-              <div>此订单已提交</div>
+              <div className="submit-success">此订单已提交</div>
               :
-              isPending && orderIDWillSubmit === listItem.orderID
-                ?
-                <div>正在提交....</div>
-                :
-                <div onClick={
-                  () => onSubmit(listItem)
-                } className="submit-button">
-                提交
-                </div>
+              <div onClick={
+                () => onSubmit(listItem)
+              } className="submit-button">
+              提交
+              </div>
           }
         </div>  
       )

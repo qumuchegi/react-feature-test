@@ -14,9 +14,11 @@ export const orderSubmition = selector({
    * If any of the selector's dependencies change, the selector will re-evaluate.
    */
   get: async ({ get }) => {
+    // orderWillSubmitAtom 改变的时候会重新计算 get
+    // 能不能在 orderWillSubmitAtom 为初始值时不见算 selector 呢?
     const orderWillSubmit = get(orderWillSubmitAtom)
     console.count('提交次数')
-    // console.log({orderWillSubmit})
+    console.log({orderWillSubmit})
     if (!orderWillSubmit) return requestStatus.noReq
     const res = await postOrder(orderWillSubmit)
     return res

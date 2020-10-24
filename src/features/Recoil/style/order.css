@@ -1,7 +1,7 @@
 .order-item{
-  background-color: rgb(34, 211, 211);
+  background-color: rgb(226, 192, 164);
   width: 300px;
-  height: 160px;
+  height: 200px;
   border-radius: 7px;
   margin: 10px;
   padding: 10px;
@@ -20,4 +20,9 @@
 }
 .submit-button:active{
   background-color: rgb(170, 111, 111);
+}
+.submit-success{
+  color: rgb(66, 187, 66);
+  background-color: aliceblue;
+  padding: 10px
 }
