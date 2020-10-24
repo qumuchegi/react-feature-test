@@ -112,8 +112,7 @@ export function useSubmitOrder() {
  */
 const useRequest = (loadable, stateHandler) => {
   useEffect(() => {
-    const onSubmitState = (status) => {
-      switch (status) {
+      switch (loadable.state) {
         case 'hasValue':
           //if (loadable.contents === requestStatus.noReq) return
           stateHandler.success(loadable.contents)
@@ -129,7 +128,5 @@ const useRequest = (loadable, stateHandler) => {
           //stateHandler.success(loadable.contents)
       }
     }
-  
-    onSubmitState(loadable.state)
-  }, [loadable.contents, loadable.state, stateHandler])
+  , [loadable.state])
 }

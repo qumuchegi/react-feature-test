@@ -47,6 +47,6 @@ export const postOrder = (order) => {
           orderID: orderDB.map(orderItem => orderItem.orderID)
         }
       })
-     }, 3000)
+     }, 1000)
   })
 }
