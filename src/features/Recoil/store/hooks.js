@@ -3,7 +3,6 @@ import { useRecoilState, useSetRecoilState, useRecoilStateLoadable, useRecoilVal
 import { cartAtom, orderAtom, orderWillSubmitAtom, orderIDHadSubmitAtom } from './atoms'
 import {orderSubmition} from './selector'
 import {produce} from 'immer'
-import { getProductList, postOrder } from '../service'
 import { requestStatus } from '../const'
 
 /**
@@ -71,20 +70,26 @@ export function useAddProductToOrder() {
 }
 
 export function useSubmitOrder() {
-  const setOrderIDHadSubmit = useSetRecoilState(orderIDHadSubmitAtom)
-  const setOrderWillSubmit = useSetRecoilState(orderWillSubmitAtom)
+  const [orderIDHadSubmit, setOrderIDHadSubmit] = useRecoilState(orderIDHadSubmitAtom)
+  const [orderWillSubmit, setOrderWillSubmit] = useRecoilState(orderWillSubmitAtom)
   const submitLoadable = useRecoilValueLoadable(orderSubmition)
+  const [isPending, setIsPending] = useState(false)
   //const [submitResLoadable, setOrderWillSubmit] = useRecoilStateLoadable(orderSubmition)
 
   const loadableStateHandler = {
     pending: () => {
+      setIsPending(true)
       console.log('正在提交订单')
     },
-    success: (hadSubmitOrderID) => {
+    success: (loadableContents) => {
+      setIsPending(false)
+      if (loadableContents === requestStatus.noReq) return
+      const hadSubmitOrderID = loadableContents.data.orderID
       setOrderIDHadSubmit(hadSubmitOrderID)
       console.log('提交订单成功', hadSubmitOrderID)
     },
     fail: () => {
+      setIsPending(false)
       console.log('订单提交失败')
     }
 
@@ -96,11 +101,11 @@ export function useSubmitOrder() {
     // orderSubmition 这个 selector 会自动执行提交的异步请求
     // 然后将请求后的响应返回
     setOrderWillSubmit(produce(draftOrder => {
-      draftOrder = [orderItem]
+      draftOrder = orderItem
       return draftOrder
     }))
   }
-  return [submitOrder]
+  return [submitOrder, orderIDHadSubmit, isPending, orderWillSubmit.orderID]
 }
 
 /**
@@ -113,9 +118,8 @@ const useRequest = (loadable, stateHandler) => {
     const onSubmitState = (status) => {
       switch (status) {
         case 'hasValue':
-          if (loadable.contents === requestStatus.noReq) return
-          console.log(loadable.contents.data)
-          stateHandler.success(loadable.contents.data.orderID)
+          //if (loadable.contents === requestStatus.noReq) return
+          stateHandler.success(loadable.contents)
           break
         case 'hasError':
           stateHandler.fail()

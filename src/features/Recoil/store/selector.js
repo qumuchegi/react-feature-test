@@ -17,7 +17,7 @@ export const orderSubmition = selector({
     const orderWillSubmit = get(orderWillSubmitAtom)
     console.count('提交次数')
     // console.log({orderWillSubmit})
-    if (orderWillSubmit.length === 0) return requestStatus.noReq
+    if (!orderWillSubmit) return requestStatus.noReq
     const res = await postOrder(orderWillSubmit)
     return res
   },

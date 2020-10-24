@@ -1,16 +1,14 @@
-import React, {useEffect, useCallback} from 'react'
-import {useRecoilState, useRecoilValue} from 'recoil'
-import { orderAtom, orderIDHadSubmitAtom } from '../store/atoms'
+import React from 'react'
+import {useRecoilValue} from 'recoil'
+import { orderAtom } from '../store/atoms'
 import {useSubmitOrder} from '../store/hooks'
-import { requestStatus } from '../const'
 
 import '../style/order.css'
 
 export default function Order() {
-  const [orderList, setOrderList] = useRecoilState(orderAtom)
-  const orderIDHadSubmit = useRecoilValue(orderIDHadSubmitAtom)
+  const orderList  = useRecoilValue(orderAtom)
 
-  let [submitOrder] = useSubmitOrder()
+  let [submitOrder, orderIDHadSubmit, isPending, orderIDWillSubmit] = useSubmitOrder()
 
   const onSubmit = (orderItem) => {
     submitOrder(orderItem)
@@ -39,18 +37,23 @@ export default function Order() {
           <div>
             <div>¥ {listItem.quantity * listItem.price}</div>
             <div>共 {listItem.quantity} 件</div>
+            <div>订单号: {listItem.orderID}</div>
           </div>
           {
             orderIDHadSubmit.findIndex(id => id === listItem.orderID) !== -1
-              ? <div>此订单已提交</div>
+              ? 
+              <div>此订单已提交</div>
               :
-              <div onClick={
-                () => onSubmit(listItem)
-              } className="submit-button">
-              提交
-              </div>
+              isPending && orderIDWillSubmit === listItem.orderID
+                ?
+                <div>正在提交....</div>
+                :
+                <div onClick={
+                  () => onSubmit(listItem)
+                } className="submit-button">
+                提交
+                </div>
           }
-          
         </div>  
       )
       : <div style={{textAlign:'center'}}>订单空了</div>

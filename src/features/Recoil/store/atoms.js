@@ -1,6 +1,5 @@
 import {atom} from 'recoil'
-import { getProductList, postOrder } from '../service'
-import { requestStatus } from '../const'
+import { getProductList } from '../service'
 
 // atom 可以是异步的
 export const productAtom = atom({
@@ -28,5 +27,5 @@ export const orderWillSubmitAtom = atom({
 
 export const orderIDHadSubmitAtom = atom({
   key: 'orderIDHadSubmitAtom',
-  default: []
+  default: null
 })

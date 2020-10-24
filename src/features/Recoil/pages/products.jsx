@@ -1,12 +1,9 @@
 import React from 'react'
-import {produce} from 'immer'
 
 import {productAtom, cartAtom} from '../store/atoms'
 import {useRecoilValueLoadable, useRecoilValue} from 'recoil'
 
 import '../style/products.css'
-
-import {productsQuery} from '../store/selector'
 
 import {useAddProductToCart, useRemoveProductIncart} from '../store/hooks'
 

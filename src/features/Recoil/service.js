@@ -38,7 +38,7 @@ let orderDB = []
 export const postOrder = (order) => {
   console.count('接收订单')
   return new Promise((resolve) => {
-    orderDB = [...orderDB, ...order]
+    orderDB = [...orderDB, order]
     setTimeout(() => {
       resolve({
         data: {
