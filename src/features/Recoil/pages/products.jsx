@@ -25,7 +25,7 @@ function ProductList(){
         {
           products
           .map(product => 
-            <div key={product.name} className="product-item">
+            <div key={product.id} className="product-item">
               <div><img src={product.img} style={{width: '60px'}}/></div>
               <div>{product.name}</div>
               <div>{product.price} 元</div>

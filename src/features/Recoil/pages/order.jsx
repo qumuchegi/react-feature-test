@@ -29,7 +29,7 @@ export default function Order() {
     {
       orderList.length > 0
       ? orderList.map(
-        listItem => <div key={listItem.name} className="order-item">
+        listItem => <div key={listItem.orderID} className="order-item">
           <div style={{display:'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
             <img src={listItem.img} style={{width: '60px'}}/>
             {listItem.name}

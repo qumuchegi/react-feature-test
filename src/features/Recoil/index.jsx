@@ -10,9 +10,9 @@ export default function Shopee() {
   const [tabIdxDisplayed, setTabIdxDisplayed] = useState(0)
 
   const Modals = [
-    <ProductList/>,
-    <Cart/>,
-    <Order/>
+    <ProductList key={0}/>,
+    <Cart key={1}/>,
+    <Order key={2}/>
   ]
   return <RecoilRoot>
     <div id="tab-mode-switch">
