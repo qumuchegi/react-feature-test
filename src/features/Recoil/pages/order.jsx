@@ -7,8 +7,7 @@ import '../style/order.css'
 
 export default function Order() {
   const orderList  = useRecoilValue(orderAtom)
-
-  let [submitOrder, orderIDHadSubmit, isPending, orderIDWillSubmit] = useSubmitOrder()
+  const [submitOrder, orderIDHadSubmit, isPending, orderIDWillSubmit] = useSubmitOrder()
 
   const onSubmit = (orderItem) => {
     submitOrder(orderItem)
@@ -21,7 +20,9 @@ export default function Order() {
       {
         orderList.length > 0
         ?
-        <div style={{backgroundColor: 'red', width: '25px', height: '25px', borderRadius: '25px', textAlign: 'center', color: 'white'}}>{orderList.length}</div>
+        <div style={{ backgroundColor: 'red', width: '25px', height: '25px', borderRadius: '25px', textAlign: 'center', color: 'white' }}>
+          {orderList.length}
+        </div>
         : null
       }
     </h3>
