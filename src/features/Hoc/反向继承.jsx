@@ -1,6 +1,6 @@
 import React from 'react'
 
-class A extends React.Component {
+export class A extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,8 +15,8 @@ class A extends React.Component {
   render () {
     return <div>
       <div>props.b: {this.props.b}</div>
-      <div>组件 A 状态 a ： {this.state.a}</div>
-      <div onClick={this.handleClick}>点击</div>
+      <div id="state-a">{this.state.a}</div>
+      <div onClick={this.handleClick} id='button'>点击</div>
     </div>
   }
 }
@@ -34,4 +34,4 @@ const Hoc = (Warped) => class extends Warped {
   }
 }
 
-export default Hoc(A)
+export default A//Hoc(A)
