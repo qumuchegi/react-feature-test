@@ -6,7 +6,7 @@ import TestHoc from '../features/Hoc/反向继承'
 import A from '../features/renderTree/index'
 import Com1 from '../features/context/'
 import Shopee from '../features/Recoil/index'
-import EmptySetStateWillUpdateAllCom from '../features/emptySetState'
+import MyRecoil from '../features/my-recoil'
 
 export const routes = [
   {
@@ -40,8 +40,8 @@ export const routes = [
     link: 'recoil demo'
   },
   {
-    path: '/emptysetstate',
-    component: <EmptySetStateWillUpdateAllCom />,
+    path: '/my-recoil',
+    component: <MyRecoil />,
     link: 'empty setState'
   }
 ]
