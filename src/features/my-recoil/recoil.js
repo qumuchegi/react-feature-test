@@ -18,7 +18,7 @@ class Node{
   }
 }
 
-export function useSetRecoilState(atom) {
+export function useMySetRecoilState(atom) {
   const { key, defaultValue } = atom
   let node
   const store = useStoreRef().current
@@ -31,7 +31,6 @@ export function useSetRecoilState(atom) {
     node = store.atomValues.get(key)
   }
 
-  // const [broadCasUpdate] = useSubRecoilState(key)
   const setState = (newValueOrUpdater) => {
     let newValue
     if (typeof newValueOrUpdater === 'function') {
@@ -40,7 +39,6 @@ export function useSetRecoilState(atom) {
     node.setValue(newValue)
     store.atomValues.set(key, node)
     store.replaceState()
-    // broadCasUpdate()
   }
   return setState
 }
@@ -52,7 +50,7 @@ function subRecoilState(store, atomkey, subid, cb) {
     store.nodeToComponentSubscriptions.set(`${subid}-${atomkey}`, cb)
   }
 }
-export function useRecoilValue(atom) {
+export function useMyRecoilValue(atom) {
   const [_, forceUpdate] = useState([])
 
   const { key, defaultValue } = atom
@@ -68,28 +66,23 @@ export function useRecoilValue(atom) {
   node = store.atomValues.get(key)
 
   useEffect(() => {
-    console.log('update', node.getValue())
     subRecoilState(store, key, subID++, () =>{
-      // console.log('update', node.getValue())
       forceUpdate([])
     })
-  
   }, [key, node, store, storeRef])
   
-  
-  
-  return node.getValue()//
+  return node.getValue()
 }
 
-export function useRecoilState(atom) {
-  return [useRecoilValue(atom), useSetRecoilState(atom)]
+export function useMyRecoilState(atom) {
+  return [useMyRecoilValue(atom), useMySetRecoilState(atom)]
 }
 
 const storeContext = React.createContext()
 
 export const useStoreRef = () => useContext(storeContext)
 
-export default function RecoilRoot({children}) {
+export default function MyRecoilRoot({children}) {
   const notifyUpdate = useRef()
   
 
@@ -110,9 +103,7 @@ export default function RecoilRoot({children}) {
     return null
   }
   function replaceState() {
-    //console.log('replace state')
     notifyUpdate.current()
-    
   }
   const storeState = useRef({
     atomValues: nodes,

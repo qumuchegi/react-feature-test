@@ -1,5 +1,5 @@
 import React from 'react'
-import RecoilRoot, {useRecoilState, useSetRecoilState, useRecoilValue} from './recoil'
+import MyRecoilRoot, {useMyRecoilState, useMyRecoilValue} from './recoil'
 
 const countAtom = {
   key: 'count_atom',
@@ -10,7 +10,7 @@ const countAtom = {
 const style = {border: 'solid 1px #456', width: '200px', margin: '20px'}
 //Com1.whyDidYouRender = true
 function Com1() {
-  const [count, setCount] = useRecoilState(countAtom)
+  const [count, setCount] = useMyRecoilState(countAtom)
 
   function handleChange(){
     setCount(count => count + 1)
@@ -26,7 +26,7 @@ function Com1() {
 
 //Com2.whyDidYouRender = true
 function Com2() {
-  const count = useRecoilValue(countAtom)
+  const count = useMyRecoilValue(countAtom)
   return (
     <div style={style}>
       <h2>组件2</h2>
@@ -37,7 +37,7 @@ function Com2() {
 
 //Com3.whyDidYouRender = true
 function Com3() {
-  const count = useRecoilValue(countAtom)
+  const count = useMyRecoilValue(countAtom)
   return (
     <div style={style}>
       <h2>组件3</h2>
@@ -49,9 +49,9 @@ function Com3() {
 App.whyDidYouRender = true
 export default function App() {
   
-  return <RecoilRoot>
+  return <MyRecoilRoot>
     <Com1/>
     <Com2/>
     <Com3/>
-  </RecoilRoot>
+  </MyRecoilRoot>
 }
