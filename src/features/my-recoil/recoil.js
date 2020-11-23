@@ -1,5 +1,4 @@
-
-import React,{ useEffect, useState, useRef, useContext, useMemo, useCallback } from 'react';
+import React,{ useEffect, useState, useRef, useContext } from 'react';
 
 const nodes = new Map()
 const subNodes = new Map()
@@ -32,7 +31,7 @@ export function useSetRecoilState(atom) {
     node = store.atomValues.get(key)
   }
 
-  const [_, triggerUpdate] = useSubRecoilState(key)
+  // const [broadCasUpdate] = useSubRecoilState(key)
   const setState = (newValueOrUpdater) => {
     let newValue
     if (typeof newValueOrUpdater === 'function') {
@@ -41,24 +40,20 @@ export function useSetRecoilState(atom) {
     node.setValue(newValue)
     store.atomValues.set(key, node)
     store.replaceState()
-    triggerUpdate()
+    // broadCasUpdate()
   }
   return setState
 }
 
 let subID = 0
-function useSubRecoilState(atomkey) {
-  const [update, setUpdate] = useState(new Map())
- 
-  const triggerUpdate = useCallback((cb) => {
-    setUpdate(new Map())
-    //cb()
-  }, [atomkey]) 
-
-  return [update, triggerUpdate]
+function subRecoilState(store, atomkey, subid, cb) {
+  console.log(subid)
+  if(!store.nodeToComponentSubscriptions.has(`${subid}-${atomkey}`)){
+    store.nodeToComponentSubscriptions.set(`${subid}-${atomkey}`, cb)
+  }
 }
 export function useRecoilValue(atom) {
-  const [_, forceUpdate] = useState([]);
+  const [_, forceUpdate] = useState([])
 
   const { key, defaultValue } = atom
   const storeRef = useStoreRef()
@@ -68,20 +63,22 @@ export function useRecoilValue(atom) {
   let node
   if (!hasNode) {
     node = new Node(key, defaultValue)
-    store.atomValues.set(node)
-  } else {
-    node = store.atomValues.get(key)
+    store.atomValues.set(key, node)
   }
-
-  const [update] = useSubRecoilState(key)
+  node = store.atomValues.get(key)
 
   useEffect(() => {
-    forceUpdate([])
-    console.log({update})
-  }, [update])
-
+    console.log('update', node.getValue())
+    subRecoilState(store, key, subID++, () =>{
+      // console.log('update', node.getValue())
+      forceUpdate([])
+    })
   
-  return node.getValue(key)
+  }, [key, node, store, storeRef])
+  
+  
+  
+  return node.getValue()//
 }
 
 export function useRecoilState(atom) {
@@ -103,17 +100,24 @@ export default function RecoilRoot({children}) {
     const [_, setstate] = useState([])
     setNotify(() => setstate({}))
 
+    useEffect(() => {
+      // 广播更新事件
+      storeState.current.nodeToComponentSubscriptions.forEach((cb) => {
+        cb()
+      })
+    })
+
     return null
   }
   function replaceState() {
-    console.log('replace state')
+    //console.log('replace state')
     notifyUpdate.current()
     
   }
   const storeState = useRef({
     atomValues: nodes,
     replaceState,
-    //nodeToComponentSubscriptions: nodesSub
+    nodeToComponentSubscriptions: subNodes
   })
 
   return <div>
